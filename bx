@@ -1,0 +1,13 @@
+#!/bin/bash
+re='^[0-9]+$'
+if ! [[ $1 =~ $re ]] ; then
+   PAGE=100
+else
+   PAGE=$1
+fi
+
+if [ -z ${TEXTTV_APP+1} ]; then
+   echo "Du har inte satt variabeln TEXTTV_APP"
+else
+   curl -s "https://texttv.nu/api/get/$PAGE?app=$TEXTTV_APP&includePlainTextContent=1" | jq '.[].content_plain[]' | sed 's/\\n/\n/g' | sed 's/"//g'
+fi
